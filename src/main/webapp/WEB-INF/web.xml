@@ -1,7 +1,23 @@
-<!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
+public class IndiaMap {
+    public static void main(String[] args) {
+        try {
+            // Load the shapefile (replace "india_shapefile.shp" with your file path)
+            File shapefile = new File("india_shapefile.shp");
+            FileDataStore store = FileDataStoreFinder.getDataStore(shapefile);
+            SimpleFeatureType featureSource = store.getFeatureSource().getSchema();
 
-<web-app>
-  <display-name>Archetype Created Web Application</display-name>
-</web-app>
+            // Create a map content and add the shapefile layer
+            MapContent map = new MapContent();
+            map.setTitle("Map of India");
+
+            Style style = SLD.createSimpleStyle(featureSource);
+            Layer layer = new FeatureLayer(store.getFeatureSource(), style);
+            map.addLayer(layer);
+
+            // Display the map in a JFrame
+            JMapFrame.showMap(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
